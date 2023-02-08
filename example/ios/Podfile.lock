@@ -1,0 +1,29 @@
+PODS:
+  - Flutter (1.0.0)
+  - flutter_in_brain_launcher (0.0.1):
+    - Flutter
+    - InBrainSurveys (~> 2.2.0)
+  - InBrainSurveys (2.2.1)
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - flutter_in_brain_launcher (from `.symlinks/plugins/flutter_in_brain_launcher/ios`)
+
+SPEC REPOS:
+  trunk:
+    - InBrainSurveys
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  flutter_in_brain_launcher:
+    :path: ".symlinks/plugins/flutter_in_brain_launcher/ios"
+
+SPEC CHECKSUMS:
+  Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
+  flutter_in_brain_launcher: b3e196897e52d2f2fa84a51969a1e455eb2a3cdf
+  InBrainSurveys: f57f7b77f76ca8f8704ca3bede8de5cf0107fa9b
+
+PODFILE CHECKSUM: 90ee745a7b6f7d35ac15bfbeb2411576b6820ba6
+
+COCOAPODS: 1.11.3
