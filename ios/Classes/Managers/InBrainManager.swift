@@ -26,7 +26,7 @@ class InBrainManager {
     }
     
     func showNativeSurve(params: ShowNativeInBrainParameters, completion: @escaping (Bool) -> ()) {
-        manager.showNativeSurveyWith(id: params.id, searchId: params.id)
+        manager.showNativeSurveyWith(id: params.id, searchId: params.searchId ?? "")
         nativeSurveyClosed = completion
     }
     
