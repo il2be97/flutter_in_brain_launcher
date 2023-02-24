@@ -3,7 +3,6 @@ import 'dart:async';
 
 import 'package:flutter_in_brain_launcher/in_brain_launcher.dart';
 
-
 void main() {
   runApp(const MyApp());
 }
@@ -40,6 +39,12 @@ class _MyAppState extends State<MyApp> {
                 height: 40,
               ),
               TextButton(
+                  onPressed: _handleGetNativeSurveys,
+                  child: const Text("Get native in brain")),
+              const SizedBox(
+                height: 40,
+              ),
+              TextButton(
                   onPressed: _showNativeSurve,
                   child: const Text("Run Native Survey")),
             ],
@@ -53,10 +58,21 @@ class _MyAppState extends State<MyApp> {
     final InBrainLauncher launcher = InBrainLauncher();
     try {
       final result = await launcher.launch(
-        apiClientID: 'Your Api Client ID',
-        apiSecret: 'Your Api Secret',
-        userID: 'test_user1',
+        apiClientID: 'e551ff8e-a707-40d8-a045-d4c9ac3dcdbe',
+        apiSecret:
+            'Y89l4iZsMLdvaq3aBEJ84FY1QpEHEySnBTxnL47Cl4gaRHMZ82fMu80Tg3gfAVy03+iHtWMup/LlaW+h512R2g==',
+        userID: 'test_1199',
       );
+      print(result);
+    } catch (error) {
+      print(error);
+    }
+  }
+
+  Future<void> _handleGetNativeSurveys() async {
+    final InBrainLauncher launcher = InBrainLauncher();
+    try {
+      final result = await launcher.getNativeSurveys();
       print(result);
     } catch (error) {
       print(error);
@@ -69,7 +85,6 @@ class _MyAppState extends State<MyApp> {
       final result =
           await launcher.showNativeSurvey(id: 'Native survey identifier');
       print(result);
-    } catch (error) {
-     }
+    } catch (error) {}
   }
 }

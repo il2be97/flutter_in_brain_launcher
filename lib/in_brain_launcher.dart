@@ -13,6 +13,9 @@ class InBrainLauncher {
           userID: userID,
           isS2S: isS2S);
 
+  Future<List<InBrainNativeSurveyObject>> getNativeSurveys() =>
+      FlutterInBrainLauncherPlatform.instance.getNativeSurveys();
+
   Future<bool> showNativeSurvey({
     required String id,
     String? searchId,

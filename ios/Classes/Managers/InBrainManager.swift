@@ -29,7 +29,14 @@ class InBrainManager {
         manager.showNativeSurveyWith(id: params.id, searchId: params.searchId ?? "")
         nativeSurveyClosed = completion
     }
-    
+
+    func getNativeSurveys(succes: @escaping ([[String: Any]]) -> (), failed: @escaping (Error) -> ()) {
+        manager.getNativeSurveys(filter: nil) { surveys in
+            succes(surveys.map { $0.toJson() })
+        } failed: { error in
+            failed(error)
+        }
+    }
 }
 
 extension InBrainManager: InBrainDelegate {

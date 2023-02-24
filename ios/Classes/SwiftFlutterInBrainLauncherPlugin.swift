@@ -18,6 +18,13 @@ public class SwiftFlutterInBrainLauncherPlugin: NSObject, FlutterPlugin {
             }
             InBrainManager.shared.configure(params: params)
             result(true)
+        case "get_native_survey":
+            InBrainManager.shared.getNativeSurveys { listOfSurveys in
+                result(listOfSurveys)
+            } failed: { error in
+                result(FlutterError(code: "Failed", message: error.localizedDescription, details: nil))
+            }
+
         case "show_native_survey":
             guard let arguments = call.arguments as? Dictionary<String, Any>,
                   let params = ShowNativeInBrainParameters(dict: arguments) else {

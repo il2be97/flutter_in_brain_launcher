@@ -34,6 +34,16 @@ class MethodChannelFlutterInBrainLauncher
     }).then((value) => value ?? false);
   }
 
+  @override
+  Future<List<InBrainNativeSurveyObject>> getNativeSurveys() => methodChannel
+      .invokeListMethod<dynamic>('get_native_survey')
+      .then(
+        (value) {
+          return value?.map((e) => InBrainNativeSurveyObject.from(e)).toList() ?? [];
+        },
+      );
+
+  @override
   Future<bool> showNativeSurvey({
     required String id,
     String? searchId,

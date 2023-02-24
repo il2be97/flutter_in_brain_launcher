@@ -4,10 +4,14 @@ import android.app.Activity;
 
 import androidx.annotation.NonNull;
 
+import com.example.flutter_in_brain_launcher.managers.InBrainGetNativeSurveyCallback;
 import com.example.flutter_in_brain_launcher.managers.InBrainManager;
 import com.example.flutter_in_brain_launcher.managers.InBrainShowNativeSurveyCallback;
 import com.example.flutter_in_brain_launcher.paramaters.ConfigureInBrainParameters;
 import com.example.flutter_in_brain_launcher.paramaters.ShowNativeSurveyParameters;
+
+import java.util.HashMap;
+import java.util.List;
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.embedding.engine.plugins.activity.ActivityAware;
@@ -61,6 +65,14 @@ public class FlutterInBrainLauncherPlugin implements FlutterPlugin, MethodCallHa
       } else {
         result.error("1", "Invalid", "Incorrect params");
       }
+    } else if (call.method.equals("get_native_survey")) {
+      final InBrainManager inBrain = new InBrainManager();
+      inBrain.getNativeSurvey(new InBrainGetNativeSurveyCallback() {
+        @Override
+        public void onSuccess(List<HashMap<String, Object>> list) {
+          result.success(list);
+        }
+      });
     } else {
       result.notImplemented();
     }
