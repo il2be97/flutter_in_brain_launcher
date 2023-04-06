@@ -70,10 +70,9 @@ class _MyAppState extends State<MyApp> {
     final InBrainLauncher launcher = InBrainLauncher();
     try {
       final result = await launcher.launch(
-        apiClientID: 'e551ff8e-a707-40d8-a045-d4c9ac3dcdbe',
-        apiSecret:
-            'Y89l4iZsMLdvaq3aBEJ84FY1QpEHEySnBTxnL47Cl4gaRHMZ82fMu80Tg3gfAVy03+iHtWMup/LlaW+h512R2g==',
-        userID: '1',
+        apiClientID: 'apiClientID',
+        apiSecret: 'apiSecret',
+        userID: 'userID',
       );
       print(result);
     } catch (error) {

@@ -2,20 +2,34 @@ package com.example.flutter_in_brain_launcher.managers;
 
 import android.content.Context;
 
+import com.example.flutter_in_brain_launcher.managers.callbacks.CheckSurveyAvailabilityCallback;
+import com.example.flutter_in_brain_launcher.managers.callbacks.InBrainGetNativeSurveyCallback;
+import com.example.flutter_in_brain_launcher.managers.listener.InBrainListener;
+import com.example.flutter_in_brain_launcher.managers.listener.callback.InBrainListenerCallback;
+import com.example.flutter_in_brain_launcher.managers.callbacks.InBrainShowNativeSurveyCallback;
+import com.example.flutter_in_brain_launcher.managers.callbacks.InBrainShowSurveysWallCallback;
 import com.example.flutter_in_brain_launcher.paramaters.ConfigureInBrainParameters;
 import com.example.flutter_in_brain_launcher.paramaters.ShowNativeSurveyParameters;
 import com.inbrain.sdk.InBrain;
+import com.inbrain.sdk.callback.InBrainCallback;
 import com.inbrain.sdk.callback.StartSurveysCallback;
 import com.inbrain.sdk.callback.SurveysAvailableCallback;
+import com.inbrain.sdk.model.Reward;
 import com.inbrain.sdk.model.Survey;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 public class InBrainManager {
+
+    public InBrainManager(){
+        if (InBrainListener.getInstance() == null) {
+            InBrainListener.start();
+        }
+    }
+
     final InBrain manager = InBrain.getInstance();
 
     public void configure(ConfigureInBrainParameters parameters) {
@@ -47,10 +61,16 @@ public class InBrainManager {
     }
 
     public void showSurveysWall(Context context, InBrainShowSurveysWallCallback callback) {
+        InBrainListener.inBrainCallback = new InBrainListenerCallback() {
+            @Override
+            public void onInBrainClosed() {
+                callback.onSuccess();
+            }
+        };
+
         manager.showSurveys(context, new StartSurveysCallback() {
             @Override
             public void onSuccess() {
-                callback.onSuccess();
             }
 
             @Override
@@ -60,7 +80,7 @@ public class InBrainManager {
         });
     }
 
-    public  void checkSurveysAvailability(Context context, CheckSurveyAvailabilityCallback callback) {
+    public void checkSurveysAvailability(Context context, CheckSurveyAvailabilityCallback callback) {
         manager.areSurveysAvailable(context, new SurveysAvailableCallback() {
             @Override
             public void onSurveysAvailable(boolean b) {

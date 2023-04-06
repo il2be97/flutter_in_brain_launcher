@@ -44,7 +44,9 @@ class InBrainManager {
     }
     
     func checkIfShowSurveysAvailable(completion: @escaping (Bool) -> ()) {
-        self.checkIfShowSurveysAvailable(completion: completion)
+        self.manager.checkForAvailableSurveys { hasSurveys, error in
+            completion(hasSurveys)
+        }
     }
 }
 
