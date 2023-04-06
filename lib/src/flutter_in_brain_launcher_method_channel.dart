@@ -3,7 +3,10 @@ import 'package:flutter/services.dart';
 
 import 'flutter_in_brain_launcher_platform_interface.dart';
 
+final _getAvaliabilityShowSurveyStatus =
+    Exception('get availability of surveys failed');
 final _showingSurveyException = Exception('showing survey failed');
+final _showingSurveysWallException = Exception('showing surveys wall failed');
 
 /// An implementation of [FlutterInBrainLauncherPlatform] that uses method channels.
 class MethodChannelFlutterInBrainLauncher
@@ -12,6 +15,7 @@ class MethodChannelFlutterInBrainLauncher
   @visibleForTesting
   final methodChannel = const MethodChannel('flutter_in_brain_launcher');
 
+  @override
   Future<bool> launch({
     required String apiClientID,
     required String apiSecret,
@@ -35,11 +39,23 @@ class MethodChannelFlutterInBrainLauncher
   }
 
   @override
-  Future<List<InBrainNativeSurveyObject>> getNativeSurveys() => methodChannel
-      .invokeListMethod<dynamic>('get_native_survey')
-      .then(
+  Future<bool> checkIfShowSurveyAvailable() => methodChannel
+          .invokeMethod<bool>('check_if_show_survey_available')
+          .then((value) {
+        if (value == null) {
+          throw _getAvaliabilityShowSurveyStatus;
+        }
+        return value;
+      });
+
+  @override
+  Future<List<InBrainNativeSurveyObject>> getNativeSurveys() =>
+      methodChannel.invokeListMethod<dynamic>('get_native_survey').then(
         (value) {
-          return value?.map((e) => InBrainNativeSurveyObject.from(e)).toList() ?? [];
+          return value
+                  ?.map((e) => InBrainNativeSurveyObject.from(e))
+                  .toList() ??
+              [];
         },
       );
 
@@ -49,7 +65,7 @@ class MethodChannelFlutterInBrainLauncher
     String? searchId,
   }) {
     return methodChannel.invokeMethod<bool>(
-      "show_native_survey",
+      'show_native_survey',
       <String, Object>{
         'id': id,
         if (searchId != null) 'searchId': searchId,
@@ -61,4 +77,13 @@ class MethodChannelFlutterInBrainLauncher
       return value;
     });
   }
+
+  @override
+  Future<bool> showSurveysWall() =>
+      methodChannel.invokeMethod<bool>('show_surveys_wall').then((value) {
+        if (value == null) {
+          throw _showingSurveysWallException;
+        }
+        return value;
+      });
 }

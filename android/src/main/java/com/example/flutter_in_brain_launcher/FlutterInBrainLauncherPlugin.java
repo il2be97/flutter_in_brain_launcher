@@ -1,12 +1,15 @@
 package com.example.flutter_in_brain_launcher;
 
 import android.app.Activity;
+import android.content.Context;
 
 import androidx.annotation.NonNull;
 
-import com.example.flutter_in_brain_launcher.managers.InBrainGetNativeSurveyCallback;
+import com.example.flutter_in_brain_launcher.managers.callbacks.CheckSurveyAvailabilityCallback;
+import com.example.flutter_in_brain_launcher.managers.callbacks.InBrainGetNativeSurveyCallback;
 import com.example.flutter_in_brain_launcher.managers.InBrainManager;
-import com.example.flutter_in_brain_launcher.managers.InBrainShowNativeSurveyCallback;
+import com.example.flutter_in_brain_launcher.managers.callbacks.InBrainShowNativeSurveyCallback;
+import com.example.flutter_in_brain_launcher.managers.callbacks.InBrainShowSurveysWallCallback;
 import com.example.flutter_in_brain_launcher.paramaters.ConfigureInBrainParameters;
 import com.example.flutter_in_brain_launcher.paramaters.ShowNativeSurveyParameters;
 
@@ -38,10 +41,11 @@ public class FlutterInBrainLauncherPlugin implements FlutterPlugin, MethodCallHa
 
   @Override
   public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
+    final InBrainManager inBrain = new InBrainManager();
+
     if (call.method.equals("launch_in_brain")) {
       if (ConfigureInBrainParameters.checkIfParamsCorrect(call)) {
         final ConfigureInBrainParameters parameters = new ConfigureInBrainParameters(call, activity);
-        final InBrainManager inBrain = new InBrainManager();
         inBrain.configure(parameters);
         result.success(true);
       } else {
@@ -50,7 +54,6 @@ public class FlutterInBrainLauncherPlugin implements FlutterPlugin, MethodCallHa
     } else if (call.method.equals("show_native_survey")) {
       if (ShowNativeSurveyParameters.checkIfParamsCorrect(call)) {
         final ShowNativeSurveyParameters parameters = new ShowNativeSurveyParameters(call, activity);
-        final InBrainManager inBrain = new InBrainManager();
         inBrain.showNativeSurvey(parameters, new InBrainShowNativeSurveyCallback() {
           @Override
           public void onSuccess() {
@@ -63,17 +66,40 @@ public class FlutterInBrainLauncherPlugin implements FlutterPlugin, MethodCallHa
           }
         });
       } else {
-        result.error("1", "Invalid", "Incorrect params");
+        result.error("3", "Invalid", "Incorrect params");
       }
     } else if (call.method.equals("get_native_survey")) {
-      final InBrainManager inBrain = new InBrainManager();
       inBrain.getNativeSurvey(new InBrainGetNativeSurveyCallback() {
         @Override
         public void onSuccess(List<HashMap<String, Object>> list) {
           result.success(list);
         }
       });
-    } else {
+    } else if (call.method.equals("show_surveys_wall")) {
+      Context context = activity;
+      inBrain.showSurveysWall(context, new InBrainShowSurveysWallCallback() {
+        @Override
+        public void onFail(String var1) {
+          result.error("4", "Show surveys wall failed", var1);
+        }
+
+        @Override
+        public void onSuccess() {
+          result.success(true);
+        }
+      });
+    } else if (call.method.equals("check_if_show_survey_available")) {
+      Context context = activity;
+
+      inBrain.checkSurveysAvailability(context, new CheckSurveyAvailabilityCallback() {
+        @Override
+        public void onCallback(boolean status) {
+          result.success(status);
+        }
+      });
+    }
+
+    else {
       result.notImplemented();
     }
   }

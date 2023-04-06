@@ -22,4 +22,9 @@ class InBrainLauncher {
   }) =>
       FlutterInBrainLauncherPlatform.instance
           .showNativeSurvey(id: id, searchId: searchId);
+
+  Future<bool> showSurveysWall() =>
+      FlutterInBrainLauncherPlatform.instance.showSurveysWall();
+
+      Future<bool> checkSurveysAvailability() => FlutterInBrainLauncherPlatform.instance.checkIfShowSurveyAvailable();
 }
