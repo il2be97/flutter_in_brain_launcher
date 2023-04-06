@@ -22,16 +22,25 @@ public class SwiftFlutterInBrainLauncherPlugin: NSObject, FlutterPlugin {
             InBrainManager.shared.getNativeSurveys { listOfSurveys in
                 result(listOfSurveys)
             } failed: { error in
-                result(FlutterError(code: "Failed", message: error.localizedDescription, details: nil))
+                result(FlutterError(code: "2", message: error.localizedDescription, details: nil))
             }
 
         case "show_native_survey":
             guard let arguments = call.arguments as? Dictionary<String, Any>,
                   let params = ShowNativeInBrainParameters(dict: arguments) else {
-                result(FlutterError(code: "1", message: "Invalid", details: "Incorrect params"))
+                result(FlutterError(code: "3", message: "Invalid", details: "Incorrect params"))
                 return
             }
             InBrainManager.shared.showNativeSurve(params: params) { status in
+                result(status)
+            }
+            
+        case "show_surveys_wall":
+            InBrainManager.shared.showSurveysWall { status in
+                result(status)
+            }
+        case "check_if_show_survey_available":
+            InBrainManager.shared.checkIfShowSurveysAvailable { status in
                 result(status)
             }
         default:

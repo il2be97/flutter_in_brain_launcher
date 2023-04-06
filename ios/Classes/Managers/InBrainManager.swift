@@ -10,7 +10,7 @@ import InBrainSurveys
 
 class InBrainManager {
     private let manager: InBrain
-    private var nativeSurveyClosed: ((Bool) -> ())?
+    private var surveyClosed: ((Bool) -> ())?
     
     static let shared = InBrainManager()
     
@@ -27,9 +27,9 @@ class InBrainManager {
     
     func showNativeSurve(params: ShowNativeInBrainParameters, completion: @escaping (Bool) -> ()) {
         manager.showNativeSurveyWith(id: params.id, searchId: params.searchId ?? "")
-        nativeSurveyClosed = completion
+        surveyClosed = completion
     }
-
+    
     func getNativeSurveys(succes: @escaping ([[String: Any]]) -> (), failed: @escaping (Error) -> ()) {
         manager.getNativeSurveys(filter: nil) { surveys in
             succes(surveys.map { $0.toJson() })
@@ -37,11 +37,20 @@ class InBrainManager {
             failed(error)
         }
     }
+    
+    func showSurveysWall(completion: @escaping (Bool) -> ())  {
+        surveyClosed = completion
+        self.manager.showSurveys()
+    }
+    
+    func checkIfShowSurveysAvailable(completion: @escaping (Bool) -> ()) {
+        self.checkIfShowSurveysAvailable(completion: completion)
+    }
 }
 
 extension InBrainManager: InBrainDelegate {
     func surveysClosed(byWebView: Bool, completedSurvey: Bool, rewards: [InBrainSurveyReward]?) {
-        nativeSurveyClosed?(completedSurvey)
+        surveyClosed?(completedSurvey)
     }
 }
 

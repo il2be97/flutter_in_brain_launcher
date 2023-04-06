@@ -39,6 +39,18 @@ class _MyAppState extends State<MyApp> {
                 height: 40,
               ),
               TextButton(
+                  onPressed: _handleCheck,
+                  child: const Text("Check Survey availabylity")),
+              const SizedBox(
+                height: 40,
+              ),
+              TextButton(
+                  onPressed: () => _showSurveysWall(),
+                  child: const Text("Show surveys wall")),
+              const SizedBox(
+                height: 40,
+              ),
+              TextButton(
                   onPressed: _handleGetNativeSurveys,
                   child: const Text("Get native in brain")),
               const SizedBox(
@@ -58,11 +70,31 @@ class _MyAppState extends State<MyApp> {
     final InBrainLauncher launcher = InBrainLauncher();
     try {
       final result = await launcher.launch(
-        apiClientID: 'input api client id',
+        apiClientID: 'e551ff8e-a707-40d8-a045-d4c9ac3dcdbe',
         apiSecret:
-            'input api secret',
-        userID: 'Input user id',
+            'Y89l4iZsMLdvaq3aBEJ84FY1QpEHEySnBTxnL47Cl4gaRHMZ82fMu80Tg3gfAVy03+iHtWMup/LlaW+h512R2g==',
+        userID: '1',
       );
+      print(result);
+    } catch (error) {
+      print(error);
+    }
+  }
+
+  Future<void> _handleCheck() async {
+    try {
+      final InBrainLauncher launcher = InBrainLauncher();
+      final result = await launcher.checkSurveysAvailability();
+      print(result);
+    } catch (error) {
+      print(error);
+    }
+  }
+
+  Future<void> _showSurveysWall() async {
+    final InBrainLauncher launcher = InBrainLauncher();
+    try {
+      final result = await launcher.showSurveysWall();
       print(result);
     } catch (error) {
       print(error);

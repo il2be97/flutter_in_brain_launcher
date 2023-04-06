@@ -57,6 +57,10 @@ abstract class FlutterInBrainLauncherPlatform extends PlatformInterface {
     bool isS2S = false,
   });
 
+
+  /// Check if we can show surveys.
+  Future<bool> checkIfShowSurveyAvailable();
+
   /// Get in brain native surveys.
   Future<List<InBrainNativeSurveyObject>> getNativeSurveys();
 
@@ -65,4 +69,7 @@ abstract class FlutterInBrainLauncherPlatform extends PlatformInterface {
     required String id,
     String? searchId,
   });
+
+  /// Show surveys wall if possible.
+  Future<bool> showSurveysWall();
 }

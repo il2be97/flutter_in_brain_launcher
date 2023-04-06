@@ -1,9 +1,12 @@
 package com.example.flutter_in_brain_launcher.managers;
 
+import android.content.Context;
+
 import com.example.flutter_in_brain_launcher.paramaters.ConfigureInBrainParameters;
 import com.example.flutter_in_brain_launcher.paramaters.ShowNativeSurveyParameters;
 import com.inbrain.sdk.InBrain;
 import com.inbrain.sdk.callback.StartSurveysCallback;
+import com.inbrain.sdk.callback.SurveysAvailableCallback;
 import com.inbrain.sdk.model.Survey;
 
 import java.util.ArrayList;
@@ -39,6 +42,29 @@ public class InBrainManager {
             @Override
             public void onFail(String s) {
                 callback.onFail(s);
+            }
+        });
+    }
+
+    public void showSurveysWall(Context context, InBrainShowSurveysWallCallback callback) {
+        manager.showSurveys(context, new StartSurveysCallback() {
+            @Override
+            public void onSuccess() {
+                callback.onSuccess();
+            }
+
+            @Override
+            public void onFail(String s) {
+                callback.onFail(s);
+            }
+        });
+    }
+
+    public  void checkSurveysAvailability(Context context, CheckSurveyAvailabilityCallback callback) {
+        manager.areSurveysAvailable(context, new SurveysAvailableCallback() {
+            @Override
+            public void onSurveysAvailable(boolean b) {
+                callback.onCallback(b);
             }
         });
     }

@@ -1,12 +1,15 @@
 package com.example.flutter_in_brain_launcher;
 
 import android.app.Activity;
+import android.content.Context;
 
 import androidx.annotation.NonNull;
 
+import com.example.flutter_in_brain_launcher.managers.CheckSurveyAvailabilityCallback;
 import com.example.flutter_in_brain_launcher.managers.InBrainGetNativeSurveyCallback;
 import com.example.flutter_in_brain_launcher.managers.InBrainManager;
 import com.example.flutter_in_brain_launcher.managers.InBrainShowNativeSurveyCallback;
+import com.example.flutter_in_brain_launcher.managers.InBrainShowSurveysWallCallback;
 import com.example.flutter_in_brain_launcher.paramaters.ConfigureInBrainParameters;
 import com.example.flutter_in_brain_launcher.paramaters.ShowNativeSurveyParameters;
 
@@ -63,7 +66,7 @@ public class FlutterInBrainLauncherPlugin implements FlutterPlugin, MethodCallHa
           }
         });
       } else {
-        result.error("1", "Invalid", "Incorrect params");
+        result.error("3", "Invalid", "Incorrect params");
       }
     } else if (call.method.equals("get_native_survey")) {
       final InBrainManager inBrain = new InBrainManager();
@@ -73,7 +76,32 @@ public class FlutterInBrainLauncherPlugin implements FlutterPlugin, MethodCallHa
           result.success(list);
         }
       });
-    } else {
+    } else if (call.method.equals("show_surveys_wall")) {
+      final InBrainManager inBrain = new InBrainManager();
+      Context context = activity;
+      inBrain.showSurveysWall(context, new InBrainShowSurveysWallCallback() {
+        @Override
+        public void onFail(String var1) {
+          result.error("4", "Show surveys wall failed", var1);
+        }
+
+        @Override
+        public void onSuccess() {
+          result.success(true);
+        }
+      });
+    } else if (call.method.equals("show_surveys_wall")) {
+      final InBrainManager inBrain = new InBrainManager();
+      Context context = activity;
+      inBrain.checkSurveysAvailability(context, new CheckSurveyAvailabilityCallback() {
+        @Override
+        public void onCallback(boolean status) {
+          result.success(status);
+        }
+      });
+    }
+
+    else {
       result.notImplemented();
     }
   }
